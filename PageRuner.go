@@ -51,6 +51,19 @@ func main() {
 		ctx.ViewData("language",tempMap)
 	    ctx.View(t + ".html")
 	})
+	app.Get("/panel/{template:string}", func(ctx iris.Context) {
+		t := ctx.Params().Get("template")
+		app.Logger().Info(t) 
+		pics := file.Reader("language/CN-zh.json")
+		// JSONToMap
+		var tempMap map[string]interface{}
+		err := json.Unmarshal([]byte(pics), &tempMap)
+		if err != nil {
+			panic(err)
+		}
+		ctx.ViewData("language",tempMap)
+	    ctx.View( "panel/"+ t +".html")
+	})
 
 	//INDEX Page STATIC
 	app.HandleDir("/js", "./static/js")
